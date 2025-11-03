@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,55 +8,60 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.DialogDivsionAndTeams;
+import pages.DivisionsAndTeamsPage;
 
 import java.util.concurrent.TimeUnit;
 
 public class TestNGTest {
 
+    Logger logger = LogManager.getLogger(TestNGTest.class);
     WebDriver driver;
+    DivisionsAndTeamsPage divisionsAndTeamsPage;
+    DialogDivsionAndTeams dialogDivsionAndTeams;
+
     @BeforeTest
     public void setup() {
 
-//        System.setProperty("webdriver.chrome.driver",
-//                "C:\\Users\\ginaleks\\Desktop\\work\\selenium-pr\\chromedriver-win64\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver",
+                "C:\\Users\\ginaleks\\Desktop\\work\\selenium-pr\\chromedriver-win64\\chromedriver.exe");
 
         driver = new ChromeDriver();
         driver.manage().window().maximize();
 
         driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
+        divisionsAndTeamsPage = new DivisionsAndTeamsPage(driver);
+        dialogDivsionAndTeams = new DialogDivsionAndTeams(driver);
     }
     @Test
     public void executeTest() {
-
-        System.setProperty("webdriver.chrome.driver",
-                "C:\\Users\\ginaleks\\Desktop\\work\\selenium-pr\\chromedriver-win64\\chromedriver.exe");
-
-        driver.get("https://seeburger.bg/careers/#divisions-and-teams");
-
-        WebElement element =
-                driver.findElement(By.xpath("/html/body/main/article/div/div[7]/div/div/div/div[1]/a/div/div[2]/p"));
+        logger.info("First test set up");
 
         String expectedTitle = "Software Development";
 
-        Assert.assertEquals(element.getText(), expectedTitle.toUpperCase());
-        Assert.assertTrue(element.isDisplayed());
+        Assert.assertEquals(divisionsAndTeamsPage.getSoftwareDevText(), expectedTitle.toUpperCase());
+        Assert.assertTrue(divisionsAndTeamsPage.isElementSoftwareDevVisible());
 
+        divisionsAndTeamsPage.clickSoftwareDevButton();
+        Assert.assertTrue(dialogDivsionAndTeams.isTitleSoftwareDevVisible());
+        Assert.assertEquals(dialogDivsionAndTeams.getSoftwareDevTitleText(), expectedTitle);
+        dialogDivsionAndTeams.closePopup();
+        Assert.assertFalse(dialogDivsionAndTeams.exists());
+
+        logger.info("Test FINISHED");
     }
 
-    @Test
-    public void executeTest2() {
-        driver.get("https://seeburger.bg/careers/#divisions-and-teams");
-
-        WebElement element =
-                driver.findElement(By.xpath("/html/body/main/article/div/div[7]/div/div/div/div[2]/a/div/div[2]/p"));
-
-        String expectedTitle = "Trading Partner Services";
-
-        Assert.assertEquals(element.getText(), expectedTitle.toUpperCase());
-        Assert.assertTrue(element.isDisplayed());
-
-    }
+//    @Test
+//    public void executeTest2() {
+//
+//        String expectedTitle = "Trading Partner Services";
+//
+//        Assert.assertEquals(divisionsAndTeamsPage.getTradingPartnerServicesText(), expectedTitle.toUpperCase());
+//        Assert.assertTrue(divisionsAndTeamsPage.isElementTradingPartnerServicesVisible());
+//
+//    }
 
     @AfterTest
     public void teardown() {
