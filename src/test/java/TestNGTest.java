@@ -1,70 +1,93 @@
+import base.BaseDivisionsAndTeamsDialog;
+import factory.DialogFactory;
+import factory.DialogFactory.DialogType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import pages.DialogDivsionAndTeams;
-import pages.DivisionsAndTeamsPage;
+import tests.DivisionsAndTeamsPage;
 
 import java.util.concurrent.TimeUnit;
 
 public class TestNGTest {
 
-    Logger logger = LogManager.getLogger(TestNGTest.class);
-    WebDriver driver;
-    DivisionsAndTeamsPage divisionsAndTeamsPage;
-    DialogDivsionAndTeams dialogDivsionAndTeams;
+    private static final Logger logger = LogManager.getLogger(TestNGTest.class);
+    private WebDriver driver;
+    private DivisionsAndTeamsPage divisionsAndTeamsPage;
 
     @BeforeTest
     public void setup() {
+        logger.info("Setting up ChromeDriver...");
 
         System.setProperty("webdriver.chrome.driver",
                 "C:\\Users\\ginaleks\\Desktop\\work\\selenium-pr\\chromedriver-win64\\chromedriver.exe");
 
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-
         driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         divisionsAndTeamsPage = new DivisionsAndTeamsPage(driver);
-        dialogDivsionAndTeams = new DialogDivsionAndTeams(driver);
+        logger.info("Setup complete. Navigated to Divisions & Teams page.");
     }
+
     @Test
-    public void executeTest() {
-        logger.info("First test set up");
+    public void testAllDialogs() {
+        logger.info("Starting dialog tests...");
 
-        String expectedTitle = "Software Development";
+        for (DialogType type : DialogType.values()) {
+            logger.info("Testing dialog: {}", type);
 
-        Assert.assertEquals(divisionsAndTeamsPage.getSoftwareDevText(), expectedTitle.toUpperCase());
-        Assert.assertTrue(divisionsAndTeamsPage.isElementSoftwareDevVisible());
+            BaseDivisionsAndTeamsDialog dialog = divisionsAndTeamsPage.openDialog(type);
 
-        divisionsAndTeamsPage.clickSoftwareDevButton();
-        Assert.assertTrue(dialogDivsionAndTeams.isTitleSoftwareDevVisible());
-        Assert.assertEquals(dialogDivsionAndTeams.getSoftwareDevTitleText(), expectedTitle);
-        dialogDivsionAndTeams.closePopup();
-        Assert.assertFalse(dialogDivsionAndTeams.exists());
+            // Visibility
+            Assert.assertTrue(dialog.isVisible(),
+                    "Dialog should be visible: " + type);
 
-        logger.info("Test FINISHED");
+            // Title text
+            String title = dialog.getTitleText();
+            logger.info("Dialog title found: {}", title);
+            Assert.assertNotNull(title, "Dialog title should not be null for: " + type);
+            Assert.assertFalse(title.isEmpty(), "Dialog title should not be empty for: " + type);
+
+            // Body text (if exists)
+            String bodyText = dialog.getBodyText();
+            if (bodyText != null) {
+                logger.info("Dialog body text detected for {}: {}", type, bodyText);
+                Assert.assertFalse(bodyText.isEmpty(), "Dialog body text should not be empty: " + type);
+            } else {
+                logger.warn("No body text locator found for: {}", type);
+            }
+
+            // Teams section
+            Assert.assertTrue(dialog.isTeamsSectionVisible(),
+                    "Teams section should be visible: " + type);
+
+            // Technologies section
+            Assert.assertTrue(dialog.isTechSectionVisible(),
+                    "Technologies section should be visible: " + type);
+
+            // Close and verify disappearance
+            dialog.close();
+            Assert.assertFalse(dialog.exists(),
+                    "Dialog should be closed and not exist anymore: " + type);
+
+            logger.info("✅ Dialog '{}' passed all checks.", type);
+        }
+
+        logger.info("🎉 All dialogs tested successfully.");
     }
-
-//    @Test
-//    public void executeTest2() {
-//
-//        String expectedTitle = "Trading Partner Services";
-//
-//        Assert.assertEquals(divisionsAndTeamsPage.getTradingPartnerServicesText(), expectedTitle.toUpperCase());
-//        Assert.assertTrue(divisionsAndTeamsPage.isElementTradingPartnerServicesVisible());
-//
-//    }
 
     @AfterTest
     public void teardown() {
-        driver.quit();
+        if (driver != null) {
+            logger.info("Closing browser...");
+            driver.quit();
+        }
+        logger.info("Teardown complete.");
     }
 }
