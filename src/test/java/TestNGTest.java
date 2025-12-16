@@ -44,17 +44,14 @@ public class TestNGTest {
 
             BaseDivisionsAndTeamsDialog dialog = divisionsAndTeamsPage.openDialog(type);
 
-            // Visibility
             Assert.assertTrue(dialog.isVisible(),
                     "Dialog should be visible: " + type);
 
-            // Title text
             String title = dialog.getTitleText();
             logger.info("Dialog title found: {}", title);
             Assert.assertNotNull(title, "Dialog title should not be null for: " + type);
             Assert.assertFalse(title.isEmpty(), "Dialog title should not be empty for: " + type);
 
-            // Body text (if exists)
             String bodyText = dialog.getBodyText();
             if (bodyText != null) {
                 logger.info("Dialog body text detected for {}: {}", type, bodyText);
@@ -63,15 +60,12 @@ public class TestNGTest {
                 logger.warn("No body text locator found for: {}", type);
             }
 
-            // Teams section
             Assert.assertTrue(dialog.isTeamsSectionVisible(),
                     "Teams section should be visible: " + type);
 
-            // Technologies section
             Assert.assertTrue(dialog.isTechSectionVisible(),
                     "Technologies section should be visible: " + type);
 
-            // Close and verify disappearance
             dialog.close();
             Assert.assertFalse(dialog.exists(),
                     "Dialog should be closed and not exist anymore: " + type);
