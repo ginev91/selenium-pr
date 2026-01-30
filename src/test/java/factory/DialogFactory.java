@@ -1,10 +1,10 @@
 package factory;
 
-import base.BaseDivisionsAndTeamsDialog;
-import tests.CloudServicesDialog;
-import tests.SoftwareDevDialog;
-import tests.SupportServicesDialog;
-import tests.TradingPartnerServicesDialog;
+import base.BaseDialog;
+import dialogs.CloudServicesDialog;
+import dialogs.SoftwareDevDialog;
+import dialogs.SupportServicesDialog;
+import dialogs.TradingPartnerServicesDialog;
 import org.openqa.selenium.WebDriver;
 
 public class DialogFactory {
@@ -20,7 +20,7 @@ public class DialogFactory {
      * Returns the correct dialog instance based on type.
      * Each dialog extends BaseDivisionsAndTeamsDialog.
      */
-    public static BaseDivisionsAndTeamsDialog create(WebDriver driver, DialogType type) {
+    public static BaseDialog create(WebDriver driver, DialogType type) {
         switch (type) {
             case SOFTWARE_DEV:
                 return new SoftwareDevDialog(driver);

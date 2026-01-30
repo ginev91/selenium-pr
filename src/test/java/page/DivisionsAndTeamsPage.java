@@ -1,6 +1,6 @@
-package tests;
+package page;
 
-import base.BaseDivisionsAndTeamsDialog;
+import base.BaseDialog;
 import factory.DialogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -30,7 +30,7 @@ public class DivisionsAndTeamsPage {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-    public BaseDivisionsAndTeamsDialog openDialog(DialogFactory.DialogType type) {
+    public BaseDialog openDialog(DialogFactory.DialogType type) {
         switch (type) {
             case SOFTWARE_DEV:
                 click(btnSoftwareDev);
