@@ -155,9 +155,6 @@ public class TestNGTest {
         logger.info("✅ isVisible() = false");
     }
 
-    /**
-     * Helper class to hold expected data
-     */
     private static class ExpectedDialogData {
         String title;
         String subTitle;
@@ -175,9 +172,6 @@ public class TestNGTest {
         }
     }
 
-    /**
-     * Get expected data from dialog class constants
-     */
     private ExpectedDialogData getExpectedData(DialogType type) {
         switch (type) {
             case SOFTWARE_DEV:

@@ -11,10 +11,6 @@ import org. openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-/**
- * Base dialog for Divisions and Teams section.
- * Contains all common functionality for all dialogs with reusable methods.
- */
 public abstract class BaseDialog {
 
     protected static final Logger logger = LogManager. getLogger(BaseDialog.class);
@@ -46,11 +42,6 @@ public abstract class BaseDialog {
         this.techSectionLocator = techSectionLocator;
     }
 
-    // ========== GENERIC REUSABLE METHODS ==========
-
-    /**
-     * Checks if element is visible with wait
-     */
     protected boolean isElementVisible(By locator) {
         if (locator == null) return false;
         try {
@@ -61,9 +52,6 @@ public abstract class BaseDialog {
         }
     }
 
-    /**
-     * Gets text from element with wait
-     */
     protected String getElementText(By locator) {
         if (locator == null) return null;
         try {
@@ -75,77 +63,47 @@ public abstract class BaseDialog {
         }
     }
 
-    /**
-     * Checks if element exists and is displayed (no wait)
-     */
+
     protected boolean isElementDisplayed(By locator) {
         if (locator == null) return false;
         List<WebElement> elems = driver.findElements(locator);
         return !elems.isEmpty() && elems.get(0).isDisplayed();
     }
 
-    /**
-     * Checks if element exists in DOM (no visibility check)
-     */
+
     protected boolean elementExists(By locator) {
         if (locator == null) return false;
         return !driver.findElements(locator).isEmpty();
     }
 
-    // ========== DIALOG-SPECIFIC METHODS ==========
-
-    /**
-     * Checks if the dialog is visible (uses title)
-     */
     public boolean isVisible() {
         return isElementVisible(titleLocator);
     }
 
-    /**
-     * Gets the dialog title text
-     */
     public String getTitleText() {
         return getElementText(titleLocator);
     }
 
-    /**
-     * Checks if the dialog subtitle is visible
-     */
     public boolean isSubTitleVisible() {
         return isElementVisible(subTitleLocator);
     }
 
-    /**
-     * Gets the dialog subtitle text
-     */
     public String getSubTitleText() {
         return getElementText(subTitleLocator);
     }
 
-    /**
-     * Gets the body/paragraph text
-     */
     public String getBodyText() {
         return getElementText(bodyLocator);
     }
 
-    /**
-     * Returns true if the Teams section is visible
-     */
     public boolean isTeamsSectionVisible() {
         return isElementDisplayed(teamsSectionLocator);
     }
 
-    /**
-     * Returns true if the Technologies section is visible
-     */
     public boolean isTechSectionVisible() {
         return isElementDisplayed(techSectionLocator);
     }
 
-    /**
-     * Closes the dialog
-     */
     public void close() {
         if (closeLocator == null) {
             logger.warn("No close locator defined");
@@ -163,16 +121,10 @@ public abstract class BaseDialog {
         }
     }
 
-    /**
-     * Checks if the dialog still exists in the DOM
-     */
     public boolean exists() {
         return elementExists(titleLocator);
     }
 
-    /**
-     * Checks if element text matches expected text
-     */
     public boolean textMatches(By locator, String expectedText) {
         String actualText = getElementText(locator);
         return actualText != null && actualText.equals(expectedText);

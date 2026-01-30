@@ -4,10 +4,6 @@ import base.BaseDialog;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Represents the "Support Services" dialog.
- * Inherits shared logic and optional locators from BaseDivisionsAndTeamsDialog.
- */
 public class SupportServicesDialog extends BaseDialog {
 
     public static final String EXPECTED_TITLE = "Support Services";

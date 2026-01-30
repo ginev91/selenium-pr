@@ -4,10 +4,6 @@ import base.BaseDialog;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Represents the "Trading Partner Services" dialog.
- * Extends BaseDivisionsAndTeamsDialog to reuse all shared dialog logic.
- */
 public class TradingPartnerServicesDialog extends BaseDialog {
 
     public static final String EXPECTED_TITLE = "Trading Partner Services";

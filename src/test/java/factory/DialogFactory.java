@@ -16,10 +16,6 @@ public class DialogFactory {
         SUPPORT_SERVICES
     }
 
-    /**
-     * Returns the correct dialog instance based on type.
-     * Each dialog extends BaseDivisionsAndTeamsDialog.
-     */
     public static BaseDialog create(WebDriver driver, DialogType type) {
         switch (type) {
             case SOFTWARE_DEV:

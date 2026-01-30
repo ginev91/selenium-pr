@@ -4,10 +4,6 @@ import base.BaseDialog;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Represents the "Cloud Services" dialog.
- * Inherits shared behaviors and optional locators from BaseDivisionsAndTeamsDialog.
- */
 public class CloudServicesDialog extends BaseDialog {
 
     public static final String EXPECTED_TITLE = "Cloud Services";

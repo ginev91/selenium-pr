@@ -4,10 +4,6 @@ import base.BaseDialog;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Represents the "Software Development" dialog.
- * Inherits shared behaviors from BaseDivisionsAndTeamsDialog.
- */
 public class SoftwareDevDialog extends BaseDialog {
 
     public static final String EXPECTED_TITLE = "Software Development";
